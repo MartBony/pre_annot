@@ -2,12 +2,12 @@
 
 Placer le dossier /pre_annot/ à côté du fichier de code.
 ⚠️ Ne pas oublier de définir le répertoire de travail au niveau du code :
-```
+```R
 setwd("répertoire/absolu/de/mon/code")
 ```
 
 Importer le code de pré-annotation
-```
+```R
 source("./pre_annot/pre_annot.R")
 ```
 
@@ -27,7 +27,7 @@ Pour pré-annoter il faut :
 ## Matrice de comptage
 
 On peut calculer la matrice de comptage des gènes en communs. Cette matrice correspond à la méthode manuelle d'annotation.
-```
+```R
 type.annot.matrix <- get.annot.matrix(SeurOBJ, diff.expressed.genes)
 ```
 
@@ -36,7 +36,7 @@ La matrice de pré-annotation assigne à chaque couple (cluster, type cellulaire
 
 Elle capture à quel point les gènes en commun sont différentiellement exprimés. (pertinent ? par la p-valeur est validée de toute facon)
 
-```
+```R
 type.avg.matrix <- get.avg.matrix(SeurOBJ, diff.expressed.genes)
 ```
 
@@ -45,12 +45,12 @@ Plus le score est grand, plus les coefficients associés aux gènes en commun so
 
 
 ## Afficher la matrice de pré-annotation
-```
+```R
 display_heatmap(my.matrix)
 ```
 
 On peut comparer les deux matrices :
-```
+```R
 display_heatmap(type.avg.matrix) + display_heatmap(type.alt.matrix)
 ```
 
@@ -58,19 +58,19 @@ display_heatmap(type.avg.matrix) + display_heatmap(type.alt.matrix)
 ## Pré-assigner automatiquement
 
 Choisit le type cellulaire le plus probable à partir de la moyenne des coefficients avg_log2FC. Utilise une fonction basique pour marquer les choix incertains.
-```
+```R
 clusters.annot <- pre_labels(type.annot.matrix, seuil = 3) # Seuil optionnel
 ```
 
 Plus le seuil est haut, plus les assignations serons considérées comme incertaines.
 
 On peut afficher directement les types cellulaires choisis :
-```
+```R
 clusters.annot
 ```
 
 ## Ajouter les labels à l'objet Seurat et à l'UMAP
-```
+```R
 names(clusters.annot) <- levels(SeurOBJ)
 LabeledSeurOBJ <- RenameIdents(SeurOBJ, clusters.annot)
 DimPlot(LabeledSeurOBJ, reduction = "umap", label = TRUE, pt.size = 0.25) + NoLegend()
@@ -84,7 +84,7 @@ DimPlot(LabeledSeurOBJ, reduction = "umap", label = TRUE, pt.size = 0.25) + NoLe
 On peut rajouter une colonne à la table des gènes différentiellement exprimés selon deux critères : 
 - Est-ce que le gène est déjà dans les données de pré-assignation ?
 - Est-ce que le gène est dans la liste des gènes inexploitables ? (fichier ./pre_annot/uselessGenes.csv)
-```
+```R
 diff.expressed.genes <- mark_knowns(diff.expressed.genes)
 ```
 
@@ -96,7 +96,7 @@ Puis on peut continuer l'assignation manuelle en se concentrant sur les gènes p
 
 
 # Exemple de code final
-```
+```R
 
 source("./pre_annot/pre_annot.R")
 
