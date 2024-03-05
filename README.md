@@ -1,6 +1,6 @@
 # Importer le code
 
-Placer le dossier /pre_annot/ à côté du fichier de code.
+Clôner dans un dossier /pre_annot/ dans le répertoire du fichier de code.
 ⚠️ Ne pas oublier de définir le répertoire de travail au niveau du code :
 ```R
 setwd("répertoire/absolu/de/mon/code")
