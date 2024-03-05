@@ -1,3 +1,5 @@
+Use `git status` to list all new or modified files that haven't yet been committed.
+
 # Importer le code
 
 Placer le dossier /pre_annot/ à côté du fichier de code.
