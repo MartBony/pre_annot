@@ -1,5 +1,5 @@
 # Mini tuto repo
-1) Installer GIT
+1) Installer GIT (déjà présent sur BIRD)
 2) Ouvrir le terminal et se placer dans le répertoire où se trouve le fichier de code avec `cd`
 3) Cloner le dossier dans le répertoire avec `git clone https://github.com/MartBony/pre_annot.git`
 
