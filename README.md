@@ -1,4 +1,31 @@
-# Importer le code
+# Mini tuto repo
+1) Installer GIT
+2) Ouvrir le terminal et se placer dans le répertoire où se trouve le fichier de code avec `cd`
+3) Cloner le dossier dans le répertoire avec `git clone https://github.com/MartBony/pre_annot.git`
+
+## Modifier et synchroniser les gènes marqueurs
+**Modification**
+Les gènes marqueurs sont dans le fichier diffGenesBase.csv et sont directement modifiables dans excel.
+Les gènes qui ne nous informent pas sur la nature de la cellule sont à mettre dans uselessGenes.csv.
+
+**Synchronisation**
+Pour syncroniser le repo, il faut valider les changements en local :
+```Bash
+git add .
+git commit -m "Modification des gènes marqueurs"
+```
+Puis importer la derniere version depuis le repo :
+```Bash
+git pull
+```
+Des problèmes de fusion de fichier peuvent survenir, dans ce cas il faut ouvrir les fichiers problématiques dans excel et les corriger soi-même.
+Puis exporter sa version locale vers github :
+```Bash
+git push origin main
+```
+
+# Tuto du code
+## Importer les fonctions
 
 Clôner dans un dossier /pre_annot/ dans le répertoire du fichier de code.
 ⚠️ Ne pas oublier de définir le répertoire de travail au niveau du code :
@@ -11,7 +38,7 @@ Importer le code de pré-annotation
 source("./pre_annot/pre_annot.R")
 ```
 
-# Prérequis
+## Prérequis
 
 Pour pré-annoter il faut :
 - L'objet seurat de travail `SeurOBJ`
@@ -22,16 +49,16 @@ Pour pré-annoter il faut :
 	- cluster
 	- gene
 
-# Fonctions de pré-annotation
+## Fonctions de pré-annotation
 
-## Matrice de comptage
+### Matrice de comptage
 
 On peut calculer la matrice de comptage des gènes en communs. Cette matrice correspond à la méthode manuelle d'annotation.
 ```R
 type.annot.matrix <- get.annot.matrix(SeurOBJ, diff.expressed.genes)
 ```
 
-## Matrice d'expression différentielle
+### Matrice d'expression différentielle
 La matrice de pré-annotation assigne à chaque couple (cluster, type cellulaire) un score qui correspond à la moyenne des coefficients avg_log2FC des gènes en communs du couple.
 
 Elle capture à quel point les gènes en commun sont différentiellement exprimés. (pertinent ? par la p-valeur est validée de toute facon)
@@ -44,7 +71,7 @@ Plus le score est grand, plus les coefficients associés aux gènes en commun so
 ⚠️ Les résultats sont à croiser avec la matrice de comptage des gènes ci dessus.
 
 
-## Afficher la matrice de pré-annotation
+### Afficher la matrice de pré-annotation
 ```R
 display_heatmap(my.matrix)
 ```
@@ -55,7 +82,7 @@ display_heatmap(type.avg.matrix) + display_heatmap(type.alt.matrix)
 ```
 
 
-## Pré-assigner automatiquement
+### Pré-assigner automatiquement
 
 Choisit le type cellulaire le plus probable à partir de la moyenne des coefficients avg_log2FC. Utilise une fonction basique pour marquer les choix incertains.
 ```R
@@ -69,7 +96,7 @@ On peut afficher directement les types cellulaires choisis :
 clusters.annot
 ```
 
-## Ajouter les labels à l'objet Seurat et à l'UMAP
+### Ajouter les labels à l'objet Seurat et à l'UMAP
 ```R
 names(clusters.annot) <- levels(SeurOBJ)
 LabeledSeurOBJ <- RenameIdents(SeurOBJ, clusters.annot)
@@ -77,9 +104,9 @@ DimPlot(LabeledSeurOBJ, reduction = "umap", label = TRUE, pt.size = 0.25) + NoLe
 ```
 
 
-# Fonctions d'aide à l'annotation finale
+## Fonctions d'aide à l'annotation finale
 
-## Maquer les gènes connus
+### Maquer les gènes connus
 
 On peut rajouter une colonne à la table des gènes différentiellement exprimés selon deux critères : 
 - Est-ce que le gène est déjà dans les données de pré-assignation ?
@@ -95,7 +122,7 @@ Puis on peut continuer l'assignation manuelle en se concentrant sur les gènes p
 
 
 
-# Exemple de code final
+## Exemple de code final
 ```R
 
 source("./pre_annot/pre_annot.R")
