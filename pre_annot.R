@@ -3,7 +3,7 @@
 
 
 #Matrice de comptage du nombre de gènes en communs
-get.annot.matrix <- function(SeuratObj, diff.expr.genes){
+get_annot_matrix <- function(SeuratObj, diff.expr.genes){
   # Pre-attribution of clusters
   nClusters <- length(levels(SeuratObj)) # Get number of clusters
   
@@ -40,7 +40,7 @@ get.annot.matrix <- function(SeuratObj, diff.expr.genes){
 
 
 
-get.avg.matrix <- function(SeuratObj, diff.expr.genes){
+get_avg_matrix <- function(SeuratObj, diff.expr.genes){
   # Pre-attribution of clusters
   nClusters <- length(levels(SeuratObj)) # Get number of clusters
   
