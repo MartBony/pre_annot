@@ -1,7 +1,10 @@
 # Mini tuto repo
-1) Installer GIT
+1) Installer GIT (déjà présent sur BIRD)
 2) Ouvrir le terminal et se placer dans le répertoire où se trouve le fichier de code avec `cd`
-3) Cloner le dossier dans le répertoire avec `git clone https://github.com/MartBony/pre_annot.git`
+3) Cloner le dossier dans le répertoire avec
+```
+git clone https://github.com/MartBony/pre_annot.git
+```
 
 ## Modifier et synchroniser les gènes marqueurs
 **Modification**
@@ -55,7 +58,7 @@ Pour pré-annoter il faut :
 
 On peut calculer la matrice de comptage des gènes en communs. Cette matrice correspond à la méthode manuelle d'annotation.
 ```R
-type.annot.matrix <- get.annot.matrix(SeurOBJ, diff.expressed.genes)
+type.annot.matrix <- get_annot_matrix(SeurOBJ, diff.expressed.genes)
 ```
 
 ### Matrice d'expression différentielle
@@ -64,7 +67,7 @@ La matrice de pré-annotation assigne à chaque couple (cluster, type cellulaire
 Elle capture à quel point les gènes en commun sont différentiellement exprimés. (pertinent ? par la p-valeur est validée de toute facon)
 
 ```R
-type.avg.matrix <- get.avg.matrix(SeurOBJ, diff.expressed.genes)
+type.avg.matrix <- get_avg_matrix(SeurOBJ, diff.expressed.genes)
 ```
 
 Plus le score est grand, plus les coefficients associés aux gènes en commun sont grands.
@@ -73,12 +76,12 @@ Plus le score est grand, plus les coefficients associés aux gènes en commun so
 
 ### Afficher la matrice de pré-annotation
 ```R
-display_heatmap(my.matrix)
+display_heatmap(type.annot.matrix)
 ```
 
 On peut comparer les deux matrices :
 ```R
-display_heatmap(type.avg.matrix) + display_heatmap(type.alt.matrix)
+display_heatmap(type.annot.matrix) + display_heatmap(type.avg.matrix)
 ```
 
 
@@ -129,8 +132,8 @@ source("./pre_annot/pre_annot.R")
 
 diff.expressed.genes <- mark_knowns(diff.expressed.genes)# optionnal 
 
-type.annot.matrix <- get.annot.matrix(SeurOBJ, diff.expressed.genes)
-type.avg.matrix <- get.avg.matrix(SeurOBJ, diff.expressed.genes)
+type.annot.matrix <- get_annot_matrix(SeurOBJ, diff.expressed.genes)
+type.avg.matrix <- get_avg_matrix(SeurOBJ, diff.expressed.genes)
 display_heatmap(type.annot.matrix) + display_heatmap(type.avg.matrix)
 
 
