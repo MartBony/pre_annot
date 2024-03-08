@@ -135,7 +135,7 @@ SeurOBJ.markers <- FindAllMarkers(SeurOBJ, only.pos = TRUE)
 # Table of most unique genes per cluster
 diff.expressed.genes <- SeurOBJ.markers %>%
   group_by(cluster) %>%
-  dplyr::filter(avg_log2FC > 1)
+  dplyr::filter(avg_log2FC > 1) # requires library(dplyr)
 
 
 # Pré-annotation
