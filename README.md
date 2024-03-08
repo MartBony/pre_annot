@@ -1,3 +1,5 @@
+⚠️ Fichier liste_Donnees.csv contient la liste des études que nous analysons. La colonne "Done" indique si et qui a analysé le dataset
+
 # Mini tuto repo
 1) Installer GIT (déjà présent sur BIRD)
 2) Ouvrir le terminal et se placer dans le répertoire où se trouve le fichier de code avec `cd`
