@@ -127,6 +127,15 @@ Puis on peut continuer l'assignation manuelle en se concentrant sur les gènes p
 
 ## Exemple de code final
 ```R
+# Générer les gènes marqueurs avant la pré-annotation
+SeurOBJ.markers <- FindAllMarkers(SeurOBJ, only.pos = TRUE)
+# Table of most unique genes per cluster
+diff.expressed.genes <- SeurOBJ.markers %>%
+  group_by(cluster) %>%
+  dplyr::filter(avg_log2FC > 1)
+
+
+# Pré-annotation
 
 source("./pre_annot/pre_annot.R")
 
