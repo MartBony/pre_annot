@@ -156,7 +156,7 @@ pre_labels <- function(type.avg.matrix, seuil = 3){
     if(score.vector[2] > 0){
       score <- score.vector[1]/score.vector[2] # score = highest / second highest
     }
-    return(score >= seuil)
+    return(score >= seuil) # Est bon si le meilleur est au moins seuil fois plus grand que le deuxième meilleur
   }
   
   clusters.annot <- c()
