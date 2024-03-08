@@ -128,7 +128,7 @@ mark_knowns <- function(diff.expr.genes){ # Add a column to identify known or us
 }
 
 
-display_heatmap <- function(matrix){ # requires to put - r-reshape and - r-ggplot2 in yml file
+display_heatmap <- function(matrix, title = ""){ # requires to put - r-reshape and - r-ggplot2 in yml file
   # Old way heatmap(type.avg.matrix, Rowv = TRUE, Colv=NA)
   
   library("ggplot2")
@@ -138,6 +138,10 @@ display_heatmap <- function(matrix){ # requires to put - r-reshape and - r-ggplo
     geom_tile(aes(fill = value)) + scale_x_continuous(label = floor) +
     xlab("Cluster") +
     ylab("Cell type")
+  
+  if(length(title)){
+    ggp <- ggp+ggtitle(title)
+  }
   
   return(ggp) 
 }
