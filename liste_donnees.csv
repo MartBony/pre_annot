@@ -5,7 +5,7 @@ GSE154826;Andrew M Leader;Leader et al. 2021;34767762;Lung Cancer(LC);90;35;Publ
 GSE131907;Nayoung Kim;Kim et al. 2020;32385277;Lung Cancer(LC);55;55;Published;"Other tissue, Tumor";;a
 GSE121636;Nicholas Borcherding;Borcherding et al. 2021;33504936;Renal Carcinoma(RC);6;3;Published;"Tumor, Normal";;a
 GSE156632;Zhang M;Zhang et al. 2021;-;Renal Carcinoma(RC);5;4;Unpublished;"Tumor, Normal";;a
-GSE152938;Cheng Su;Su et al. 2021;34722263;Renal Carcinoma(RC);5;5;Published;"Tumor, Normal";;a
+GSE152938;Cheng Su;Su et al. 2021;34722263;Renal Carcinoma(RC);5;5;Published;"Tumor, Normal";GP;a
 GSE132257;Hae-Ock Lee;Lee et al. 2020;32451460;Colorectal Cancer(CRC);10;2;Published;"Other tissue, Tumor";;mabye
 GSE144735;Hae-Ock Lee;Lee et al. 2020;32451460;Colorectal Cancer(CRC);11;5;Published;"Other tissue, Tumor, Normal";;mabye
 GSE146771;Lei Zhang;Zhang et al. 2020;32302573;Colorectal Cancer(CRC);9;9;Published;"Blood, Tumor, Normal";;mabye
