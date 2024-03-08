@@ -4,6 +4,7 @@
 3) Cloner le dossier dans le répertoire avec
 ```
 git clone https://github.com/MartBony/pre_annot.git
+cd pre_annot
 ```
 
 ## Modifier et synchroniser les gènes marqueurs
