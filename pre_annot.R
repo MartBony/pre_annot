@@ -1,13 +1,16 @@
-# Requires to set the working directory to parent folder of this with setwd() (outside pre_annot folder)
+pre_annot_wd <- getwd() # dir of pre_annot folder because of chdir = TRUE
 
 
 
 #Matrice de comptage du nombre de gènes en communs
 get_annot_matrix <- function(SeuratObj, diff.expr.genes){
+  global_wd <- getwd()
+  setwd(pre_annot_wd)
+  
   # Pre-attribution of clusters
   nClusters <- length(levels(SeuratObj)) # Get number of clusters
   
-  diffGenesRef <- read.csv("./pre_annot/diffGenesBase.csv", sep = ";")
+  diffGenesRef <- read.csv("./diffGenesBase.csv", sep = ";")
   cellTypes <- colnames(diffGenesRef)
   
   
@@ -34,6 +37,8 @@ get_annot_matrix <- function(SeuratObj, diff.expr.genes){
     }
   }
   
+  setwd(global_wd)
+  
   return(type.annot.matrix)
 }
 
@@ -41,10 +46,13 @@ get_annot_matrix <- function(SeuratObj, diff.expr.genes){
 
 
 get_avg_matrix <- function(SeuratObj, diff.expr.genes){
+  global_wd <- getwd()
+  setwd(pre_annot_wd)
+  
   # Pre-attribution of clusters
   nClusters <- length(levels(SeuratObj)) # Get number of clusters
   
-  diffGenesRef <- read.csv("./pre_annot/diffGenesBase.csv", sep = ";")
+  diffGenesRef <- read.csv("./diffGenesBase.csv", sep = ";")
   cellTypes <- colnames(diffGenesRef)
   
   
@@ -81,14 +89,21 @@ get_avg_matrix <- function(SeuratObj, diff.expr.genes){
   # orderedPredictions <- type.avg.matrix[,HungarianSolver(-type.avg.matrix)$pairs[,2]] # Requires RcppHungarian Package
   
   
+  setwd(global_wd)
+  
   return(type.avg.matrix)
 }
 
 mark_knowns <- function(diff.expr.genes){ # Add a column to identify known or useless genes 
   # IE genes that were already analysed and/or that didn't help identify previoulsy
   # Seeks to accelerate the identification of difficult clusters
-  diffGenesRef <- read.csv("./pre_annot/diffGenesBase.csv", sep = ";")
-  uselessGenes <- read.csv("./pre_annot/uselessGenes.csv", sep = ";")
+  
+  
+  global_wd <- getwd()
+  setwd(pre_annot_wd)
+  
+  diffGenesRef <- read.csv("./diffGenesBase.csv", sep = ";")
+  uselessGenes <- read.csv("./uselessGenes.csv", sep = ";")
   diff.expr.genes$known <- FALSE
   
   for(col in diffGenesRef){
@@ -106,6 +121,8 @@ mark_knowns <- function(diff.expr.genes){ # Add a column to identify known or us
       diff.expr.genes$known[j] <- TRUE
     }
   }
+  
+  setwd(global_wd)
   
   return(diff.expr.genes)
 }

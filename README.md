@@ -38,7 +38,7 @@ setwd("répertoire/absolu/de/mon/code")
 
 Importer le code de pré-annotation
 ```R
-source("./pre_annot/pre_annot.R")
+source("../pre_annot/pre_annot.R", chdir=TRUE)
 ```
 
 ## Prérequis
