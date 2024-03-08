@@ -1,4 +1,4 @@
-⚠️ Fichier liste_Donnees.csv contient la liste des études que nous analysons. La colonne "Done" indique si et qui a analysé le dataset
+⚠️ Fichier liste_donnees.csv contient la liste des études que nous analysons. La colonne "Done" indique si et qui a analysé le dataset.
 
 # Mini tuto repo
 1) Installer GIT (déjà présent sur BIRD)

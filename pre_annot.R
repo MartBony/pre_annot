@@ -10,7 +10,7 @@ get_annot_matrix <- function(SeuratObj, diff.expr.genes){
   # Pre-attribution of clusters
   nClusters <- length(levels(SeuratObj)) # Get number of clusters
   
-  diffGenesRef <- read.csv("./diffGenesBase.csv", sep = ";")
+  diffGenesRef <- read.csv("./diffGenesBase.csv")
   cellTypes <- colnames(diffGenesRef)
   
   
@@ -52,7 +52,7 @@ get_avg_matrix <- function(SeuratObj, diff.expr.genes){
   # Pre-attribution of clusters
   nClusters <- length(levels(SeuratObj)) # Get number of clusters
   
-  diffGenesRef <- read.csv("./diffGenesBase.csv", sep = ";")
+  diffGenesRef <- read.csv("./diffGenesBase.csv")
   cellTypes <- colnames(diffGenesRef)
   
   
@@ -102,8 +102,8 @@ mark_knowns <- function(diff.expr.genes){ # Add a column to identify known or us
   global_wd <- getwd()
   setwd(pre_annot_wd)
   
-  diffGenesRef <- read.csv("./diffGenesBase.csv", sep = ";")
-  uselessGenes <- read.csv("./uselessGenes.csv", sep = ";")
+  diffGenesRef <- read.csv("./diffGenesBase.csv")
+  uselessGenes <- read.csv("./uselessGenes.csv")
   diff.expr.genes$known <- FALSE
   
   for(col in diffGenesRef){
