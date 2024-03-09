@@ -80,6 +80,7 @@ Plus le score est grand, plus les coefficients associés aux gènes en commun so
 ### Afficher la matrice de pré-annotation
 ```R
 display_heatmap(type.annot.matrix)
+display_heatmap(type.annot.matrix, "Nombre de gènes") # Possibilité de mettre un titre
 ```
 
 On peut comparer les deux matrices :
@@ -146,7 +147,7 @@ diff.expressed.genes <- mark_knowns(diff.expressed.genes)# optionnal
 
 type.annot.matrix <- get_annot_matrix(SeurOBJ, diff.expressed.genes)
 type.avg.matrix <- get_avg_matrix(SeurOBJ, diff.expressed.genes)
-display_heatmap(type.annot.matrix) + display_heatmap(type.avg.matrix)
+display_heatmap(type.annot.matrix, "Nombre de gènes") + display_heatmap(type.avg.matrix, "Expression différentielle")
 
 
 # Display annotations on UMAP
