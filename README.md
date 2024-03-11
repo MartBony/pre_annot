@@ -140,6 +140,7 @@ DimPlot(LabeledSeurOBJ, reduction = "umap", label = TRUE, pt.size = 0.25) + NoLe
 On peut rajouter une colonne à la table des gènes différentiellement exprimés selon deux critères : 
 - Est-ce que le gène est déjà dans les données de pré-assignation ?
 - Est-ce que le gène est dans la liste des gènes inexploitables ? (fichier ./pre_annot/uselessGenes.csv)
+
 ```R
 diff.expressed.genes <- mark_knowns(diff.expressed.genes)
 ```
@@ -163,21 +164,42 @@ diff.expressed.genes <- SeurOBJ.markers %>%
 
 # Pré-annotation
 
-source("./pre_annot/pre_annot.R")
+
+source("../pre_annot/pre_annot.R", chdir=TRUE)
 
 diff.expressed.genes <- mark_knowns(diff.expressed.genes)# optionnal 
 
 type.annot.matrix <- get_annot_matrix(SeurOBJ, diff.expressed.genes)
+type.gene.matrix <- get_gene_matrix(SeurOBJ, diff.expressed.genes)
 type.avg.matrix <- get_avg_matrix(SeurOBJ, diff.expressed.genes)
-display_heatmap(type.annot.matrix, "Nombre de gènes") + display_heatmap(type.avg.matrix, "Expression différentielle")
+type.modulated.matrix <- type.annot.matrix * type.avg.matrix
+display_heatmap(type.gene.matrix, "Nombre de gènes")
+display_heatmap(type.avg.matrix, "Expression différentielle")
+display_heatmap(type.annot.matrix, "% de correspondance")
+display_heatmap(type.modulated.matrix, "% de correspondance modulé par l'expression différentielle")
+
+# Display annotations on UMAP
+clusters.annot <- pre_labels(type.annot.matrix, seuil = 2)
+clusters.annot
 
 
 # Display annotations on UMAP
-clusters.annot <- pre_labels(type.annot.matrix, seuil = 6)
-clusters.annot
+clusters.annot.alternatif <- pre_labels(type.modulated.matrix, seuil = 2)
+clusters.annot.alternatif
 
 names(clusters.annot) <- levels(SeurOBJ)
-LabeledSeurOBJ.alt <- RenameIdents(SeurOBJ, clusters.annot)
-DimPlot(LabeledSeurOBJ.alt, reduction = "umap", label = TRUE, pt.size = 0.25) + NoLegend()
+SeurOBJ.labeled <- RenameIdents(SeurOBJ, clusters.annot)
+DimPlot(SeurOBJ.labeled, reduction = "umap", label = TRUE, pt.size = 0.25) + 
+NoLegend() + 
+labs(title = "Annotation par comparaison")
+
+
+names(clusters.annot.alternatif) <- levels(SeurOBJ)
+SeurOBJ.alt.labeled <- RenameIdents(SeurOBJ, clusters.annot.alternatif)
+DimPlot(SeurOBJ.alt.labeled, reduction = "umap", label = TRUE, pt.size = 0.25) + 
+  NoLegend() +
+  labs(title = "Annotation par comparaison et expression")
+
+
 
 ```
