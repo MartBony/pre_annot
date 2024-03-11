@@ -57,11 +57,23 @@ Pour pré-annoter il faut :
 
 ## Fonctions de pré-annotation
 
-### Matrice de comptage
+### Matrice de comparaison
 
-On peut calculer la matrice de comptage des gènes en communs. Cette matrice correspond à la méthode manuelle d'annotation.
+La matrice de comparaison représente pour chaque cluster et pour chaque type le pourcentage des génes de références du type qui sont différentiellement exprimés dans le cluster. C'est la matrice de comptage corrigée par le nombre de gènes de références qui varie selon type cellulaire.
+
+C?est celle qu'il faut préférer pour l'annotation, même si il faut aussi jeter un oeil à la matrice d'expression différentielle.
+
 ```R
 type.annot.matrix <- get_annot_matrix(SeurOBJ, diff.expressed.genes)
+```
+
+*PS : Un type cellulaire avec 1 seul gène (ex : LT cd8 pour l'instant) sera 0 ou 1 et apparaîtera prioritéaire sur tous les autres types. Ce cas est à éviter $\to$ ajouter des gènes.*
+
+### Matrice de comptage
+
+On peut calculer la matrice de comptage des gènes en communs. Cette matrice correspond plus ou moins à la méthode manuelle d'annotation. Elle est biaisée pour les types cellulaires qui possèdent 
+```R
+type.gene.matrix <- get_gene_matrix(SeurOBJ, diff.expressed.genes)
 ```
 
 ### Matrice d'expression différentielle
@@ -77,20 +89,30 @@ Plus le score est grand, plus les coefficients associés aux gènes en commun so
 ⚠️ Les résultats sont à croiser avec la matrice de comptage des gènes ci dessus.
 
 
-### Afficher la matrice de pré-annotation
+### Visualiser les matrices
 ```R
 display_heatmap(type.annot.matrix)
 ```
 
-On peut comparer les deux matrices :
+On peut comparer les deux matrices l'une à côté de l'autre :
 ```R
 display_heatmap(type.annot.matrix) + display_heatmap(type.avg.matrix)
 ```
 
+### Opérations sur les matrices
+On peut croiser les informations de deux matrices en les multipliant élément par élément.
+Je pense que celle qui a le plus de potentiel est :
+```r
+mtx <- type.annot.matrix * type.avg.matrix
+```
+
+Elle correspond au % de correspondance aux gènes corrigé par le niveau moyen d'expression différentielle de ces gènes.
+Le problème c'est que je ne suis pas sur que c'est ultra rigoureux à utiliser pour la suite.
+
 
 ### Pré-assigner automatiquement
 
-Choisit le type cellulaire le plus probable à partir de la moyenne des coefficients avg_log2FC. Utilise une fonction basique pour marquer les choix incertains.
+Choisit le type cellulaire le plus probable à partir de la matrice choisie. Utilise une fonction basique pour marquer les choix incertains.
 ```R
 clusters.annot <- pre_labels(type.annot.matrix, seuil = 3) # Seuil optionnel
 ```
