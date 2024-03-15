@@ -60,6 +60,8 @@ get_avg_matrix <- function(SeuratObj, diff.expr.genes){
   
   ## Init matrix of association + gene count matrix
   gene.count.matrix <- matrix(0, nrow=length(cellTypes), ncol=nClusters)
+  colnames(gene.count.matrix) <- 0:(nClusters-1)
+  rownames(gene.count.matrix) <- cellTypes
   
   type.avg.matrix <- matrix(0, nrow=length(cellTypes), ncol=nClusters)
   colnames(type.avg.matrix) <- 0:(nClusters-1)
