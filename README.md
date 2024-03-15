@@ -174,7 +174,7 @@ diff.expressed.genes <- mark_knowns(diff.expressed.genes) # optionnal
 type.annot.matrix <- get_annot_matrix(SeurOBJ, diff.expressed.genes)
 type.avg.matrix <- get_avg_matrix(SeurOBJ, diff.expressed.genes)
 type.corresp.matrix <- get_corresp_matrix(SeurOBJ, diff.expressed.genes)
-type.modulated.matrix <- type.annot.matrix * type.avg.matrix
+type.modulated.matrix <- type.corresp.matrix * type.avg.matrix
 display_heatmap(type.annot.matrix, "Nombre de gènes")
 display_heatmap(type.avg.matrix, "Expression différentielle")
 display_heatmap(type.corresp.matrix, "% de correspondance")

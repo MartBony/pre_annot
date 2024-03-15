@@ -103,31 +103,35 @@ get_avg_matrix <- function(SeuratObj, diff.expr.genes){
   cellTypes <- colnames(diffGenesRef)
   
   
-  ## Init matrix of association
+  ## Init matrix of association + gene count matrix
+  gene.count.matrix <- matrix(0, nrow=length(cellTypes), ncol=nClusters)
+  colnames(gene.count.matrix) <- 0:(nClusters-1)
+  rownames(gene.count.matrix) <- cellTypes
+  
   type.avg.matrix <- matrix(0, nrow=length(cellTypes), ncol=nClusters)
   colnames(type.avg.matrix) <- 0:(nClusters-1)
   rownames(type.avg.matrix) <- cellTypes
   
   for (i in 1:ncol(diffGenesRef)){ # for each cell type
     genes.list <- c()
-    n.significant.genes <- 0 # Pour la moyenne, compter le nombre de gènes statistiquement sig
     irow <- cellTypes[i]
     for(gene in diffGenesRef[,i]){ # for each marker gene
       if(!is.na(gene) & !(gene %in% genes.list)){ # Don't do the same gene twice
         whiches <- which(diff.expr.genes$gene == gene) # find if in diff expressed genes
-        for(j in whiches){ # for each row
+        for(j in whiches){
           if(diff.expr.genes$p_val_adj[j]<0.05 && diff.expr.genes$avg_log2FC[j] > 0){ # use adjusted p-value + we don't use genes that are underexpressed
             jcol <- diff.expr.genes$cluster[j]
             type.avg.matrix[irow, jcol] <- type.avg.matrix[irow, jcol] + diff.expr.genes$avg_log2FC[j]
-            n.significant.genes <- n.significant.genes + 1
+            gene.count.matrix[irow, jcol] <- gene.count.matrix[irow, jcol] + 1
           }
         }
         genes.list <- append(gene, genes.list)
       }
     }
-    if(n.significant.genes){
-      type.avg.matrix[irow, ] <- type.avg.matrix[irow,] / n.significant.genes # Diviser par le nombre de gènes trouvés pour faire une moyenne
-    }
+    
+    type.avg.matrix <- type.avg.matrix / pmax(gene.count.matrix,1) # Diviser par le nombre de gènes trouvés pour faire une moyenne
+      
+    
   }
   
   
