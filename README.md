@@ -106,8 +106,7 @@ Je pense que celle qui a le plus de potentiel est :
 mtx <- type.annot.matrix * type.avg.matrix
 ```
 
-Elle correspond au % de correspondance aux gènes corrigé par le niveau moyen d'expression différentielle de ces gènes.
-Le problème c'est que je ne suis pas sur que c'est ultra rigoureux à utiliser pour la suite.
+Elle correspond à la somme des log fold-change (avg_log2FC).
 
 
 ### Pré-assigner automatiquement
@@ -174,11 +173,11 @@ diff.expressed.genes <- mark_knowns(diff.expressed.genes) # optionnal
 type.annot.matrix <- get_annot_matrix(SeurOBJ, diff.expressed.genes)
 type.avg.matrix <- get_avg_matrix(SeurOBJ, diff.expressed.genes)
 type.corresp.matrix <- get_corresp_matrix(SeurOBJ, diff.expressed.genes)
-type.modulated.matrix <- type.corresp.matrix * type.avg.matrix
+type.modulated.matrix <- type.annot.matrix * type.avg.matrix
 display_heatmap(type.annot.matrix, "Nombre de gènes")
 display_heatmap(type.avg.matrix, "Expression différentielle")
 display_heatmap(type.corresp.matrix, "% de correspondance")
-display_heatmap(type.modulated.matrix, "% de correspondance modulé par l'expression différentielle")
+display_heatmap(type.modulated.matrix, "Somme des log fold-change")
 
 save.plot.png(display_heatmap(type.annot.matrix, "Nombre de gènes"), "./gene_count_matrix.png")
 
