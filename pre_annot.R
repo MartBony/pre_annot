@@ -44,6 +44,62 @@ get_annot_matrix <- function(SeuratObj, diff.expr.genes){
 }
 
 
+
+
+# mat(cluster, type.cel) = Moyenne de avg_log2FC des gènes diff express en commun
+get_avg_matrix <- function(SeuratObj, diff.expr.genes){
+  global_wd <- getwd()
+  setwd(pre_annot_wd)
+  
+  # Pre-attribution of clusters
+  nClusters <- length(levels(SeuratObj)) # Get number of clusters
+  
+  diffGenesRef <- read.csv("./diffGenesBase.csv")
+  cellTypes <- colnames(diffGenesRef)
+  
+  
+  ## Init matrix of association + gene count matrix
+  gene.count.matrix <- matrix(0, nrow=length(cellTypes), ncol=nClusters)
+  
+  type.avg.matrix <- matrix(0, nrow=length(cellTypes), ncol=nClusters)
+  colnames(type.avg.matrix) <- 0:(nClusters-1)
+  rownames(type.avg.matrix) <- cellTypes
+  
+  for (i in 1:ncol(diffGenesRef)){ # for each cell type
+    genes.list <- c()
+    irow <- cellTypes[i]
+    for(gene in diffGenesRef[,i]){ # for each marker gene
+      if(!is.na(gene) & !(gene %in% genes.list)){ # Don't do the same gene twice
+        whiches <- which(diff.expr.genes$gene == gene) # find if in diff expressed genes
+        for(j in whiches){
+          if(diff.expr.genes$p_val_adj[j]<0.05 && diff.expr.genes$avg_log2FC[j] > 0){ # use adjusted p-value + we don't use genes that are underexpressed
+            jcol <- diff.expr.genes$cluster[j]
+            type.avg.matrix[irow, jcol] <- type.avg.matrix[irow, jcol] + diff.expr.genes$avg_log2FC[j]
+            gene.count.matrix[irow, jcol] <- gene.count.matrix[irow, jcol] + 1
+          }
+        }
+        genes.list <- append(gene, genes.list)
+      }
+    }
+    
+  }
+  
+  type.avg.matrix <- type.avg.matrix / pmax(gene.count.matrix,1) # Diviser par le nombre de gènes trouvés pour faire une moyenne
+  
+  
+  
+  # Make the associations more clear by putting max on the diag
+  # ⚠️ 1 cluster != 1 cell type : 
+  # orderedPredictions <- type.avg.matrix[,HungarianSolver(-type.avg.matrix)$pairs[,2]] # Requires RcppHungarian Package
+  
+  
+  setwd(global_wd)
+  
+  return(type.avg.matrix)
+}
+
+
+
 # mat(cluster, type.cel) = % des gènes marqueurs du type qui sont diff expr
 get_corresp_matrix <- function(SeuratObj, diff.expr.genes){
   global_wd <- getwd()
@@ -90,60 +146,6 @@ get_corresp_matrix <- function(SeuratObj, diff.expr.genes){
 
 
 
-
-# mat(cluster, type.cel) = Moyenne de avg_log2FC des gènes diff express en commun
-get_avg_matrix <- function(SeuratObj, diff.expr.genes){
-  global_wd <- getwd()
-  setwd(pre_annot_wd)
-  
-  # Pre-attribution of clusters
-  nClusters <- length(levels(SeuratObj)) # Get number of clusters
-  
-  diffGenesRef <- read.csv("./diffGenesBase.csv")
-  cellTypes <- colnames(diffGenesRef)
-  
-  
-  ## Init matrix of association + gene count matrix
-  gene.count.matrix <- matrix(0, nrow=length(cellTypes), ncol=nClusters)
-  colnames(gene.count.matrix) <- 0:(nClusters-1)
-  rownames(gene.count.matrix) <- cellTypes
-  
-  type.avg.matrix <- matrix(0, nrow=length(cellTypes), ncol=nClusters)
-  colnames(type.avg.matrix) <- 0:(nClusters-1)
-  rownames(type.avg.matrix) <- cellTypes
-  
-  for (i in 1:ncol(diffGenesRef)){ # for each cell type
-    genes.list <- c()
-    irow <- cellTypes[i]
-    for(gene in diffGenesRef[,i]){ # for each marker gene
-      if(!is.na(gene) & !(gene %in% genes.list)){ # Don't do the same gene twice
-        whiches <- which(diff.expr.genes$gene == gene) # find if in diff expressed genes
-        for(j in whiches){
-          if(diff.expr.genes$p_val_adj[j]<0.05 && diff.expr.genes$avg_log2FC[j] > 0){ # use adjusted p-value + we don't use genes that are underexpressed
-            jcol <- diff.expr.genes$cluster[j]
-            type.avg.matrix[irow, jcol] <- type.avg.matrix[irow, jcol] + diff.expr.genes$avg_log2FC[j]
-            gene.count.matrix[irow, jcol] <- gene.count.matrix[irow, jcol] + 1
-          }
-        }
-        genes.list <- append(gene, genes.list)
-      }
-    }
-    
-    type.avg.matrix <- type.avg.matrix / pmax(gene.count.matrix,1) # Diviser par le nombre de gènes trouvés pour faire une moyenne
-      
-    
-  }
-  
-  
-  # Make the associations more clear by putting max on the diag
-  # ⚠️ 1 cluster != 1 cell type : 
-  # orderedPredictions <- type.avg.matrix[,HungarianSolver(-type.avg.matrix)$pairs[,2]] # Requires RcppHungarian Package
-  
-  
-  setwd(global_wd)
-  
-  return(type.avg.matrix)
-}
 
 mark_knowns <- function(diff.expr.genes){ # Add a column to identify known or useless genes 
   # IE genes that were already analysed and/or that didn't help identify previoulsy
