@@ -1,23 +1,23 @@
-Data accession number;First author;Dataset;Pubmed ID;Cancer type;Sample number;Patient number;Data source;Tissue;Done;Data Available
-GSE178318;Li-Heng Che;Che et al. 2021;34489408;Colorectal Cancer(CRC);15;6;Published;"Other tissue, Blood, Tumor";;a
-GSE178341;Karin Pelka;Pelka et al. 2021;34450029;Colorectal Cancer(CRC);147;52;Published;"Tumor, Normal";;a
-GSE154826;Andrew M Leader;Leader et al. 2021;34767762;Lung Cancer(LC);90;35;Published;"Tumor, Normal";;a
-GSE131907;Nayoung Kim;Kim et al. 2020;32385277;Lung Cancer(LC);55;55;Published;"Other tissue, Tumor";;a
-GSE121636;Nicholas Borcherding;Borcherding et al. 2021;33504936;Renal Carcinoma(RC);6;3;Published;"Tumor, Normal";;a
-GSE156632;Zhang M;Zhang et al. 2021;-;Renal Carcinoma(RC);5;4;Unpublished;"Tumor, Normal";;a
-GSE152938;Cheng Su;Su et al. 2021;34722263;Renal Carcinoma(RC);5;5;Published;"Tumor, Normal";GP;a
-GSE132257;Hae-Ock Lee;Lee et al. 2020;32451460;Colorectal Cancer(CRC);10;2;Published;"Other tissue, Tumor";;mabye
-GSE144735;Hae-Ock Lee;Lee et al. 2020;32451460;Colorectal Cancer(CRC);11;5;Published;"Other tissue, Tumor, Normal";;mabye
-GSE146771;Lei Zhang;Zhang et al. 2020;32302573;Colorectal Cancer(CRC);9;9;Published;"Blood, Tumor, Normal";;mabye
-GSE132465;Hae-Ock Lee;Lee et al. 2020;32451460;Colorectal Cancer(CRC);23;15;Published;"Tumor, Normal";;mabye
-Bischoff et al. 2021;Philip Bischoff;Bischoff et al. 2021;34663877;Lung Cancer(LC);20;12;Published;"Tumor, Normal";;mabye
-Bi et al. 2021;Kevin Bi;Bi et al. 2021;33711272;Renal Carcinoma(RC);6;6;Published;"Other tissue, Tumor";;mabye
-this study (GSE212890);this study;this study;-;"Uterine Corpus Endometrial Carcinoma(UCEC), Thyroid Carcinoma(THCA), Renal Carcinoma(RC), Pancreatic Cancer(PACA), Ovarian Cancer(OV), Breast Cancer(BRCA), Fallopian Tube Carcinoma(FTC), Esophageal Cancer(ESCA)";77;47;This study;"Tumor, Normal";;mabye
-Nieto et al. 2021;Paula Nieto;Nieto et al. 2021;34548323;Colorectal Cancer(CRC);1;1;Published;Tumor;;no
-GSE188711;Wei Guo;Guo et al. 2022;34793335;Colorectal Cancer(CRC);6;6;Published;Tumor;;no
-GSE148071;Fengying Wu;Wu et al. 2021;33953163;Lung Cancer(LC);2;2;Published;Tumor;;no
-GSE127465;Rapolas Zilionis;Zilionis et al. 2019;30979687;Lung Cancer(LC);21;6;Published;"Blood, Tumor";;no
-GSE123904;Ashley M Laughney;Laughney et al. 2020;32042191;Lung Cancer(LC);9;8;Published;"Tumor, Normal";;no
-Chen et al. 2020;Jian Chen;Chen et al. 2020;32580738;Lung Cancer(LC);11;11;Published;Tumor;;no
-aat1699;Matthew D Young;Young et al. 2018;30093597;Renal Carcinoma(RC);9;3;Published;Tumor;;no
-GSE145281;Kobe C Yuen;Yuen et al. 2020;32405063;Renal Carcinoma(RC);10;7;Published;"Blood, Tumor";;no
+Data accession number;First author;Dataset;Pubmed ID;Cancer type;Sample number;Patient number;Data source;Tissue;Done;Data Available;Comment ;conclusions
+GSE178318;Li-Heng Che;Che et al. 2021;34489408;Colorectal Cancer(CRC);15;6;Published;"Other tissue, Blood, Tumor";ZG;a;;
+GSE178341;Karin Pelka;Pelka et al. 2021;34450029;Colorectal Cancer(CRC);147;52;Published;"Tumor, Normal";;no;;
+GSE154826;Andrew M Leader;Leader et al. 2021;34767762;Lung Cancer(LC);90;35;Published;"Tumor, Normal";MG;a;"Lots of data, seems interesting";HHLA2 expressed in tumour cells
+GSE131907;Nayoung Kim;Kim et al. 2020;32385277;Lung Cancer(LC);55;55;Published;"Other tissue, Tumor";;a;Seems possible to analyse;
+GSE121636;Nicholas Borcherding;Borcherding et al. 2021;33504936;Renal Carcinoma(RC);6;3;Published;"Tumor, Normal";ZG;a;;
+GSE156632;Zhang M;Zhang et al. 2021;-;Renal Carcinoma(RC);5;4;Unpublished;"Tumor, Normal";;a but no;Data not exploitable directly;
+GSE152938;Cheng Su;Su et al. 2021;34722263;Renal Carcinoma(RC);5;5;Published;"Tumor, Normal";GP;a;;
+GSE132257;Hae-Ock Lee;Lee et al. 2020;32451460;Colorectal Cancer(CRC);10;2;Published;"Other tissue, Tumor";;mabye;;
+GSE144735;Hae-Ock Lee;Lee et al. 2020;32451460;Colorectal Cancer(CRC);11;5;Published;"Other tissue, Tumor, Normal";;mabye;;
+GSE146771;Lei Zhang;Zhang et al. 2020;32302573;Colorectal Cancer(CRC);9;9;Published;"Blood, Tumor, Normal";;mabye;;
+GSE132465;Hae-Ock Lee;Lee et al. 2020;32451460;Colorectal Cancer(CRC);23;15;Published;"Tumor, Normal";;mabye;;
+Bischoff et al. 2021;Philip Bischoff;Bischoff et al. 2021;34663877;Lung Cancer(LC);20;12;Published;"Tumor, Normal";;mabye;;
+Bi et al. 2021;Kevin Bi;Bi et al. 2021;33711272;Renal Carcinoma(RC);6;6;Published;"Other tissue, Tumor";;mabye;;
+this study (GSE212890);this study;this study;-;"Uterine Corpus Endometrial Carcinoma(UCEC), Thyroid Carcinoma(THCA), Renal Carcinoma(RC), Pancreatic Cancer(PACA), Ovarian Cancer(OV), Breast Cancer(BRCA), Fallopian Tube Carcinoma(FTC), Esophageal Cancer(ESCA)";77;47;This study;"Tumor, Normal";;mabye;;
+Nieto et al. 2021;Paula Nieto;Nieto et al. 2021;34548323;Colorectal Cancer(CRC);1;1;Published;Tumor;;no;;
+GSE188711;Wei Guo;Guo et al. 2022;34793335;Colorectal Cancer(CRC);6;6;Published;Tumor;;no;;
+GSE148071;Fengying Wu;Wu et al. 2021;33953163;Lung Cancer(LC);2;2;Published;Tumor;;no;;
+GSE127465;Rapolas Zilionis;Zilionis et al. 2019;30979687;Lung Cancer(LC);21;6;Published;"Blood, Tumor";;no;;
+GSE123904;Ashley M Laughney;Laughney et al. 2020;32042191;Lung Cancer(LC);9;8;Published;"Tumor, Normal";;no;;
+Chen et al. 2020;Jian Chen;Chen et al. 2020;32580738;Lung Cancer(LC);11;11;Published;Tumor;;no;;
+aat1699;Matthew D Young;Young et al. 2018;30093597;Renal Carcinoma(RC);9;3;Published;Tumor;;no;;
+GSE145281;Kobe C Yuen;Yuen et al. 2020;32405063;Renal Carcinoma(RC);10;7;Published;"Blood, Tumor";;no;;

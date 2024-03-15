@@ -2,7 +2,8 @@ pre_annot_wd <- getwd() # dir of pre_annot folder because of chdir = TRUE
 
 
 
-#Matrice de comptage du nombre de gènes en communs
+
+# mat(cluster, type.cel) = nbr genes commun
 get_annot_matrix <- function(SeuratObj, diff.expr.genes){
   global_wd <- getwd()
   setwd(pre_annot_wd)
@@ -10,7 +11,7 @@ get_annot_matrix <- function(SeuratObj, diff.expr.genes){
   # Pre-attribution of clusters
   nClusters <- length(levels(SeuratObj)) # Get number of clusters
   
-  diffGenesRef <- read.csv("./diffGenesBase.csv", sep = ";")
+  diffGenesRef <- read.csv("./diffGenesBase.csv", na.strings = "")
   cellTypes <- colnames(diffGenesRef)
   
   
@@ -21,18 +22,18 @@ get_annot_matrix <- function(SeuratObj, diff.expr.genes){
   
   for (i in 1:ncol(diffGenesRef)){ # for each cell type
     genes.list <- c()
-    n.significant.genes <- 0 # Pour la moyenne, compter le nombre de gènes statistiquement sig
     irow <- cellTypes[i]
     for(gene in diffGenesRef[,i]){ # for each marker gene
-      if(!(gene %in% genes.list)){ # Don't do the same gene twice
+      if(!is.na(gene) & !(gene %in% genes.list)){ # Don't do the same gene twice
         whiches <- which(diff.expr.genes$gene == gene) # find if in diff expressed genes
         for(j in whiches){ # for each row
           if(diff.expr.genes$p_val_adj[j]<0.05 && diff.expr.genes$avg_log2FC[j] > 0){ # use adjusted p-value
             jcol <- diff.expr.genes$cluster[j]
             type.annot.matrix[irow, jcol] <- type.annot.matrix[irow, jcol] + 1
+            
           }
         }
-        append(gene, genes.list)
+        genes.list <- append(gene, genes.list)
       }
     }
   }
@@ -45,6 +46,7 @@ get_annot_matrix <- function(SeuratObj, diff.expr.genes){
 
 
 
+# mat(cluster, type.cel) = Moyenne de avg_log2FC des gènes diff express en commun
 get_avg_matrix <- function(SeuratObj, diff.expr.genes){
   global_wd <- getwd()
   setwd(pre_annot_wd)
@@ -52,36 +54,40 @@ get_avg_matrix <- function(SeuratObj, diff.expr.genes){
   # Pre-attribution of clusters
   nClusters <- length(levels(SeuratObj)) # Get number of clusters
   
-  diffGenesRef <- read.csv("./diffGenesBase.csv", sep = ";")
+  diffGenesRef <- read.csv("./diffGenesBase.csv")
   cellTypes <- colnames(diffGenesRef)
   
   
-  ## Init matrix of association
+  ## Init matrix of association + gene count matrix
+  gene.count.matrix <- matrix(0, nrow=length(cellTypes), ncol=nClusters)
+  colnames(gene.count.matrix) <- 0:(nClusters-1)
+  rownames(gene.count.matrix) <- cellTypes
+  
   type.avg.matrix <- matrix(0, nrow=length(cellTypes), ncol=nClusters)
   colnames(type.avg.matrix) <- 0:(nClusters-1)
   rownames(type.avg.matrix) <- cellTypes
   
   for (i in 1:ncol(diffGenesRef)){ # for each cell type
     genes.list <- c()
-    n.significant.genes <- 0 # Pour la moyenne, compter le nombre de gènes statistiquement sig
     irow <- cellTypes[i]
     for(gene in diffGenesRef[,i]){ # for each marker gene
-      if(!(gene %in% genes.list)){ # Don't do the same gene twice
+      if(!is.na(gene) & !(gene %in% genes.list)){ # Don't do the same gene twice
         whiches <- which(diff.expr.genes$gene == gene) # find if in diff expressed genes
-        for(j in whiches){ # for each row
+        for(j in whiches){
           if(diff.expr.genes$p_val_adj[j]<0.05 && diff.expr.genes$avg_log2FC[j] > 0){ # use adjusted p-value + we don't use genes that are underexpressed
             jcol <- diff.expr.genes$cluster[j]
             type.avg.matrix[irow, jcol] <- type.avg.matrix[irow, jcol] + diff.expr.genes$avg_log2FC[j]
-            n.significant.genes <- n.significant.genes + 1
+            gene.count.matrix[irow, jcol] <- gene.count.matrix[irow, jcol] + 1
           }
         }
-        append(gene, genes.list)
+        genes.list <- append(gene, genes.list)
       }
     }
-    if(n.significant.genes){
-      type.avg.matrix[cellTypes[i], ] <- type.avg.matrix[cellTypes[i],] / n.significant.genes # Diviser par le nombre de gènes trouvés pour faire une moyenne
-    }
+    
   }
+  
+  type.avg.matrix <- type.avg.matrix / pmax(gene.count.matrix,1) # Diviser par le nombre de gènes trouvés pour faire une moyenne
+  
   
   
   # Make the associations more clear by putting max on the diag
@@ -94,6 +100,55 @@ get_avg_matrix <- function(SeuratObj, diff.expr.genes){
   return(type.avg.matrix)
 }
 
+
+
+# mat(cluster, type.cel) = % des gènes marqueurs du type qui sont diff expr
+get_corresp_matrix <- function(SeuratObj, diff.expr.genes){
+  global_wd <- getwd()
+  setwd(pre_annot_wd)
+  
+  # Pre-attribution of clusters
+  nClusters <- length(levels(SeuratObj)) # Get number of clusters
+  
+  diffGenesRef <- read.csv("./diffGenesBase.csv", na.strings = "")
+  cellTypes <- colnames(diffGenesRef)
+  
+  
+  ## Init matrix of association
+  type.annot.matrix <- matrix(0, nrow=length(cellTypes), ncol=nClusters)
+  colnames(type.annot.matrix) <- 0:(nClusters-1)
+  rownames(type.annot.matrix) <- cellTypes
+  
+  for (i in 1:ncol(diffGenesRef)){ # for each cell type
+    genes.list <- c()
+    irow <- cellTypes[i]
+    for(gene in diffGenesRef[,i]){ # for each marker gene
+      if(!is.na(gene) & !(gene %in% genes.list)){ # Don't do the same gene twice
+        whiches <- which(diff.expr.genes$gene == gene) # find if in diff expressed genes
+        for(j in whiches){ # for each row
+          if(diff.expr.genes$p_val_adj[j]<0.05 && diff.expr.genes$avg_log2FC[j] > 0){ # use adjusted p-value
+            jcol <- diff.expr.genes$cluster[j]
+            type.annot.matrix[irow, jcol] <- type.annot.matrix[irow, jcol] + 1
+            
+          }
+        }
+        genes.list <- append(gene, genes.list)
+      }
+    }
+    if(length(genes.list)){
+      # Diviser par le nombre de gènes trouvés pour faire une moyenne
+      type.annot.matrix[irow,] <- type.annot.matrix[irow,] / length(genes.list) 
+    }
+  }
+  
+  setwd(global_wd)
+  
+  return(type.annot.matrix)
+}
+
+
+
+
 mark_knowns <- function(diff.expr.genes){ # Add a column to identify known or useless genes 
   # IE genes that were already analysed and/or that didn't help identify previoulsy
   # Seeks to accelerate the identification of difficult clusters
@@ -102,15 +157,18 @@ mark_knowns <- function(diff.expr.genes){ # Add a column to identify known or us
   global_wd <- getwd()
   setwd(pre_annot_wd)
   
-  diffGenesRef <- read.csv("./diffGenesBase.csv", sep = ";")
-  uselessGenes <- read.csv("./uselessGenes.csv", sep = ";")
+  diffGenesRef <- read.csv("./diffGenesBase.csv", fill=FALSE, na.strings = "")
+  cell.types <- colnames(diffGenesRef)
+  uselessGenes <- read.csv("./uselessGenes.csv")
   diff.expr.genes$known <- FALSE
+  diff.expr.genes$type <- ""
   
-  for(col in diffGenesRef){
-    for(gene in col){
+  for(i in 1:ncol(diffGenesRef)){
+    for(gene in diffGenesRef[,i]){
       whiches <- which(diff.expr.genes$gene == gene) # find if in diff expressed genes
         for(j in whiches){ # for each row
           diff.expr.genes$known[j] <- TRUE
+          diff.expr.genes$type[j] <- cell.types[[i]]
         }
     }
   }
@@ -119,6 +177,7 @@ mark_knowns <- function(diff.expr.genes){ # Add a column to identify known or us
     whiches <- which(diff.expr.genes$gene == gene) # find if in diff expressed genes
     for(j in whiches){ # for each row
       diff.expr.genes$known[j] <- TRUE
+      diff.expr.genes$type[j] <- "Useless"
     }
   }
   
@@ -180,4 +239,12 @@ pre_labels <- function(type.avg.matrix, seuil = 3){
   
   
   return(clusters.annot)
+}
+
+
+save.plot.png <- function(plot, dir){
+  # No switch of directories to save in global working dir
+  png(dir)
+  plot(plot)
+  dev.off()
 }
