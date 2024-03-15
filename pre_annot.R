@@ -187,7 +187,7 @@ mark_knowns <- function(diff.expr.genes){ # Add a column to identify known or us
 }
 
 
-plot_heatmap <- function(matrix, title = ""){ # requires to put - r-reshape and - r-ggplot2 in yml file
+display_heatmap <- function(matrix, title = ""){ # requires to put - r-reshape and - r-ggplot2 in yml file
   # Old way heatmap(type.avg.matrix, Rowv = TRUE, Colv=NA)
   
   library("ggplot2")

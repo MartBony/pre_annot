@@ -180,7 +180,7 @@ display_heatmap(type.avg.matrix, "Expression différentielle")
 display_heatmap(type.corresp.matrix, "% de correspondance")
 display_heatmap(type.modulated.matrix, "% de correspondance modulé par l'expression différentielle")
 
-save.plot.png(plot_heatmap(type.annot.matrix, "Nombre de gènes"), "./gene_count_matrix.png")
+save.plot.png(display_heatmap(type.annot.matrix, "Nombre de gènes"), "./gene_count_matrix.png")
 
 
 
